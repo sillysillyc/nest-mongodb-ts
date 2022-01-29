@@ -6,7 +6,8 @@ import { BlogModule } from './blog/blog.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://47.98.149.5/nest', {
+    MongooseModule.forRoot('mongodb://localhost/nest', {
+      // MongooseModule.forRoot('mongodb://47.98.149.5/nest', {
       // MongooseModule.forRoot('mongodb://nestUser:password@47.98.149.5/nest', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
