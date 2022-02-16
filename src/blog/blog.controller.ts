@@ -34,7 +34,7 @@ export class BlogController {
 
   @Post('/post')
   async addPost(@Res() res, @Body() createPostDTO: CreatePostDTO) {
-    console.log('fff');
+    console.log('test');
     const newPost = await this.blogService.addPost(createPostDTO);
     return res.status(HttpStatus.OK).json({
       message: 'Post has been submitted successfully!',
