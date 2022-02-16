@@ -14,6 +14,7 @@ export class BlogService {
   }
 
   async getPost(postID): Promise<Post> {
+    console.log('test');
     const post = await this.postModel.findById(postID).exec();
     return post;
   }
