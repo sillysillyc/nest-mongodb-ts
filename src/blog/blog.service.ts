@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Post } from './interfaces/post.interface';
 import { CreatePostDTO } from './dto/create-post.dto';
+import { PostDTO } from './dto/post.dto';
 
 @Injectable()
 export class BlogService {
@@ -19,7 +20,15 @@ export class BlogService {
     return post;
   }
 
-  async addPost(createPostDTO: CreatePostDTO): Promise<Post> {
+  async addPost(basePostDTO: PostDTO): Promise<Post> {
+    const date_posted = new Date()
+      .toLocaleString('zh-CN', { hour12: false })
+      .replace(/\//g, '-');
+    const createPostDTO = {
+      ...basePostDTO,
+      date_posted,
+    };
+
     const newPost = await new this.postModel(createPostDTO);
     return newPost.save();
   }

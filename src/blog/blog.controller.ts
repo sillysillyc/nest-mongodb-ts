@@ -10,8 +10,10 @@ import {
   Query,
   Put,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
+import { PostDTO } from './dto/post.dto';
 import { CreatePostDTO } from './dto/create-post.dto';
 import { ValidateObjectId } from './shared/pipes/validate-object-id.pipes';
 
@@ -32,9 +34,8 @@ export class BlogController {
   }
 
   @Post('/post')
-  async addPost(@Body() createPostDTO: CreatePostDTO) {
-    const newPost = await this.blogService.addPost(createPostDTO);
-    return newPost;
+  async addPost(@Body(new ValidationPipe()) basePostDTO: PostDTO) {
+    return await this.blogService.addPost(basePostDTO);
   }
   @Put('/edit')
   async editPost(

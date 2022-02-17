@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { CustomCode } from '../helpers/codes';
 
 interface Response<T> {
   data: T;
@@ -23,8 +24,8 @@ export class TransformInterceptor<T>
       map((data) => {
         return {
           data,
-          code: '0000',
-          message: '请求成功',
+          resultCode: CustomCode.SUCCESS,
+          resultMsg: '请求成功',
         };
       }),
     );
