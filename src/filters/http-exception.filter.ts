@@ -21,7 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         error: message,
       }, // 获取全部的错误信息
       message: '请求失败',
-      code: 1, // 自定义code
+      code: '1111', // 自定义code
       url: request.originalUrl, // 错误的url地址
     };
     const status =
