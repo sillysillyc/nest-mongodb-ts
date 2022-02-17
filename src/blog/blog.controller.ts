@@ -10,8 +10,10 @@ import {
   Query,
   Put,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
+import { PostDTO } from './dto/post.dto';
 import { CreatePostDTO } from './dto/create-post.dto';
 import { ValidateObjectId } from './shared/pipes/validate-object-id.pipes';
 
@@ -20,26 +22,20 @@ export class BlogController {
   constructor(private blogService: BlogService) {}
 
   @Get('posts')
-  async getPosts(@Res() res) {
-    const posts = await this.blogService.getPosts();
-    return res.status(HttpStatus.OK).json(posts);
+  async getPosts() {
+    return await this.blogService.getPosts();
   }
 
   @Get('post/:postID')
-  async getPost(@Res() res, @Param('postID', new ValidateObjectId()) postID) {
+  async getPost(@Param('postID', new ValidateObjectId()) postID) {
     const post = await this.blogService.getPost(postID);
     if (!post) throw new NotFoundException('Post does not exist!');
-    return res.status(HttpStatus.OK).json(post);
+    return post;
   }
 
   @Post('/post')
-  async addPost(@Res() res, @Body() createPostDTO: CreatePostDTO) {
-    console.log('test');
-    const newPost = await this.blogService.addPost(createPostDTO);
-    return res.status(HttpStatus.OK).json({
-      message: 'Post has been submitted successfully!',
-      post: newPost,
-    });
+  async addPost(@Body(new ValidationPipe()) basePostDTO: PostDTO) {
+    return await this.blogService.addPost(basePostDTO);
   }
   @Put('/edit')
   async editPost(
