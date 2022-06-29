@@ -10,8 +10,4 @@ export class AppController {
   async getHello(): Promise<any> {
     return this.appService.getHello();
   }
-  @Get('/ai-svc')
-  async aiFn() {
-    return '111';
-  }
 }
