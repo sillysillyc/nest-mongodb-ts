@@ -29,10 +29,10 @@ jobs:
         uses: actions/checkout@master
         # with:
         #   ref: master
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v1
+      #   with:
+      #     node-version: 16.x
 
       # - name: Install Dependencies
       #   run: npm install
@@ -66,4 +66,4 @@ jobs:
             npm install --legacy-peer-deps
             chown -R root:root .
             npm run build
-            pm2 start ./dist/main.js
+            pm2 restart ./dist/main.js
