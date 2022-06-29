@@ -1,7 +1,6 @@
-export class CreatePostDTO {
-  readonly title: string;
-  readonly description: string;
-  readonly body: string;
-  readonly author: string;
+// import { IsString, IsNotEmpty } from 'class-validator';
+// import { typeMessage, emptyMessage } from './validateMessage';
+import { PostDTO } from './post.dto';
+export class CreatePostDTO extends PostDTO {
   readonly date_posted: string;
 }
