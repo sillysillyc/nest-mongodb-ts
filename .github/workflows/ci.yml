@@ -65,8 +65,8 @@ jobs:
             cd /usr/nest-backend
             ls -la
             command -v yarn
-            yarn --version
-            yarn run build && ls -la
+            npm install
+            npm run build
             # ls -la
             # cd ./dist
             # npx nodemon main.js
