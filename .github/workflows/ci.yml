@@ -61,9 +61,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
-          username: root
-          password: Aadzxc,./
-          port: 22
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /usr
             ls -la
