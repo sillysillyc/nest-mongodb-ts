@@ -54,12 +54,12 @@ jobs:
       #     REMOTE_USER: ${{ secrets.REMOTE_USER }}
       #     TARGET: ${{ secrets.REMOTE_TARGET }}
       - name: executing remote ssh commands using ssh
-        uses: fifsky/ssh-action@master
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
-          user: ${{ secrets.REMOTE_USER }}
+          username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          command: |
+          script: |
             PATH=$PATH:/${{ secrets.REMOTE_USER }}/.nvm/versions/node/v16.15.1
             # cd /usr/nest-backend
             node -v
