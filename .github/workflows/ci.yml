@@ -54,10 +54,10 @@ jobs:
       #     REMOTE_USER: ${{ secrets.REMOTE_USER }}
       #     TARGET: ${{ secrets.REMOTE_TARGET }}
       - name: executing remote ssh commands using ssh
-        uses: appleboy/ssh-action@master
+        uses: fifsky/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
+          user: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /usr/nest-backend
