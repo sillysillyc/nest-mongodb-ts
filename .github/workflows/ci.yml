@@ -64,4 +64,5 @@ jobs:
             source ~/.nvm/nvm.sh
             cd /usr/nest-backend
             npm install --legacy-peer-deps
+            chown -R root:root .
             npm run dev
