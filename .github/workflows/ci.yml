@@ -65,4 +65,5 @@ jobs:
             cd /usr/nest-backend
             npm install --legacy-peer-deps
             chown -R root:root .
-            npm run dev
+            npm run build
+            pm2 start ./dist/main.js
