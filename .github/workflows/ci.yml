@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           command: |
             cd /usr/nest-backend
-            ls -la
+            node -v
             # command -v nvm
             # npm install
             # npm run build
