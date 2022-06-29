@@ -63,8 +63,9 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd /usr/nest-backend
-            command -v nvm
-            yarn install
+            ls -la
+            command -v yarn
+            yarn --version
             yarn run build && ls -la
             # ls -la
             # cd ./dist
