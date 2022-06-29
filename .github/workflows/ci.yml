@@ -59,7 +59,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           user: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
+          command: |
             cd /usr/nest-backend
             command -v nvm
             # npm install
