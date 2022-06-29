@@ -63,10 +63,8 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd /usr/nest-backend
-            ls -la
-            command -v yarn
-            npm install
+            npm install --legacy-peer-deps
             npm run build
-            # ls -la
+            ls -la
             # cd ./dist
             # npx nodemon main.js
