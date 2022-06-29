@@ -29,10 +29,6 @@ jobs:
         uses: actions/checkout@master
         # with:
         #   ref: master
-      - name: List files
-        run: ls -la
-        env:
-          CI: true
       # - name: Setup Node.js environment
       #   uses: actions/setup-node@v1
       #   with:
@@ -48,15 +44,15 @@ jobs:
       #   env:
       #     CI: true
 
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@v2.1.2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
-          ARGS: '-rltgoDzvO --delete'
-          SOURCE: './'
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+      # - name: Deploy to Server
+      #   uses: easingthemes/ssh-deploy@v2.1.2
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      #     ARGS: '-rltgoDzvO --delete'
+      #     SOURCE: './'
+      #     REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+      #     REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      #     TARGET: ${{ secrets.REMOTE_TARGET }}
       - name: executing remote ssh commands using ssh
         uses: appleboy/ssh-action@master
         with:
