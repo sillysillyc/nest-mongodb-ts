@@ -65,7 +65,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /usr/nest-backend
-            npm install
-            npm run build
-            cd dist
-            npx nodemon main.js
+            nvm ls
+            # npm install
+            # npm run build
+            # cd dist
+            # npx nodemon main.js
