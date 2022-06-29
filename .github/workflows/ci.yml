@@ -64,8 +64,8 @@ jobs:
             source ~/.nvm/nvm.sh
             cd /usr/nest-backend
             command -v nvm
-            npm install
-            npm run build
+            yarn
+            yarn run build
             ls -la
             # cd ./dist
             # npx nodemon main.js
