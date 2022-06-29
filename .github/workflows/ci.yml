@@ -63,11 +63,10 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             npm --help
-            # PATH=$PATH:/${{ secrets.REMOTE_USER }}/.nvm/versions/node/v16.15.1
             node -v
-            # cd /usr/nest-backend
-            # command -v nvm
-            # npm install
-            # npm run build
-            # cd dist
-            # npx nodemon main.js
+            cd /usr/nest-backend
+            command -v nvm
+            npm install
+            npm run build
+            cd dist
+            npx nodemon main.js
