@@ -60,6 +60,9 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            npm --help
             # PATH=$PATH:/${{ secrets.REMOTE_USER }}/.nvm/versions/node/v16.15.1
             node -v
             # cd /usr/nest-backend
