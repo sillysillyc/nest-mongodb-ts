@@ -66,5 +66,6 @@ jobs:
             command -v nvm
             npm install
             npm run build
-            cd ./dist
-            npx nodemon main.js
+            ls -la
+            # cd ./dist
+            # npx nodemon main.js
