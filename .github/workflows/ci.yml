@@ -66,4 +66,4 @@ jobs:
             npm install --legacy-peer-deps
             chown -R root:root .
             npm run build
-            pm2 restart ./dist/main.js
+            pm2 start ./dist/main.js --name nest --watch
