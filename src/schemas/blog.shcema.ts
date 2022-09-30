@@ -9,6 +9,6 @@ export const BlogSchema = new mongoose.Schema(
     date_posted: String,
   },
   {
-    collation: 'blog',
+    collection: 'blog',
   },
 );
