@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+        script: |
+          echo 'Log info'
+          ls -la
         # with:
         #   ref: master
       # - name: Setup Node.js environment
@@ -43,10 +46,8 @@ jobs:
       #   run: npm run build
       #   env:
       #     CI: true
-      - name: Log info
-        script: |
-          echo 'Log info'
-          ls -la
+      # - name: Log info
+        
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.2
