@@ -43,6 +43,10 @@ jobs:
       #   run: npm run build
       #   env:
       #     CI: true
+      - name: Log info
+        script: |
+          echo 'Log info'
+          ls -la
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.2
