@@ -7,7 +7,7 @@ import { PostDTO } from './dto/post.dto';
 
 @Injectable()
 export class BlogService {
-  constructor(@InjectModel('Post') private readonly postModel: Model<Post>) {}
+  constructor(@InjectModel('blog') private readonly postModel: Model<Post>) {}
 
   async getPosts(): Promise<Post[]> {
     const posts = await this.postModel.find().exec();

@@ -36,6 +36,7 @@ export class BlogController {
   @Post('/post')
   async addPost(@Body(new ValidationPipe()) basePostDTO: PostDTO) {
     return await this.blogService.addPost(basePostDTO);
+    // return res.status(HttpStatus.OK).json(data);
   }
   @Put('/edit')
   async editPost(

@@ -1,20 +1,20 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { typeMessage, emptyMessage } from './validateMessage';
+import { typeErrorMessage, emptyErrorMessage } from '../../helpers/constants';
 
 export class PostDTO {
-  @IsString({ message: typeMessage('title') })
-  @IsNotEmpty({ message: emptyMessage('title') })
+  @IsString({ message: typeErrorMessage('title') })
+  @IsNotEmpty({ message: emptyErrorMessage('title') })
   readonly title: string;
 
-  @IsString({ message: typeMessage('description') })
-  @IsNotEmpty({ message: emptyMessage('description') })
+  @IsString({ message: typeErrorMessage('description') })
+  @IsNotEmpty({ message: emptyErrorMessage('description') })
   readonly description: string;
 
-  @IsString({ message: typeMessage('body') })
-  @IsNotEmpty({ message: emptyMessage('body') })
+  @IsString({ message: typeErrorMessage('body') })
+  @IsNotEmpty({ message: emptyErrorMessage('body') })
   readonly body: string;
 
-  @IsString({ message: typeMessage('author') })
-  @IsNotEmpty({ message: emptyMessage('author') })
+  @IsString({ message: typeErrorMessage('author') })
+  @IsNotEmpty({ message: emptyErrorMessage('author') })
   readonly author: string;
 }
