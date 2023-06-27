@@ -28,7 +28,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
         script: |
-          echo 'Log info'
+          echo 'Log info2'
           ls -la
         # with:
         #   ref: master
