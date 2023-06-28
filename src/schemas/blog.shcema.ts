@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { overwriteSchemaToJSON } from 'src/helpers/tools';
 
 export const BlogSchema = new mongoose.Schema(
   {
@@ -6,9 +7,11 @@ export const BlogSchema = new mongoose.Schema(
     description: String,
     body: String,
     author: String,
-    date_posted: String,
+    datePosted: String,
   },
   {
     collection: 'blog',
   },
 );
+
+overwriteSchemaToJSON(BlogSchema);
