@@ -10,24 +10,29 @@ import { Observable } from 'rxjs';
 import { CustomCode } from '../helpers/codes';
 
 interface Response<T> {
-  data: T;
+  data: {
+    data: T;
+    total: number;
+    page: number;
+    pageSize: number;
+  };
 }
 
 @Injectable()
-export class TransformInterceptor<T>
-  implements NestInterceptor<T, Response<T>>
+export class ListInterceptor<T>
+  implements NestInterceptor<Response<T>, Response<T>>
 {
   intercept(
     context: ExecutionContext,
-    next: CallHandler<T>,
+    next: CallHandler<Response<T>>,
   ): Observable<Response<T>> {
     return next.handle().pipe(
       map((data) => {
         context.switchToHttp().getResponse().status(HttpStatus.OK);
         return {
-          data,
           resultCode: CustomCode.SUCCESS,
           resultMsg: '请求成功',
+          ...data,
         };
       }),
     );
