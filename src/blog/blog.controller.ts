@@ -4,64 +4,91 @@ import {
   Res,
   HttpStatus,
   Param,
-  NotFoundException,
   Post,
   Body,
   Query,
   Put,
   Delete,
   ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
-import { PostDTO } from './dto/post.dto';
-import { CreatePostDTO } from './dto/create-post.dto';
-import { ValidateObjectId } from './shared/pipes/validate-object-id.pipes';
+import { ValidateObjectIdPipe } from 'src/pipes/validate-object-id.pipes';
+import { CustomCode } from 'src/helpers/codes';
+import { ListInterceptor } from 'src/interceptors/list.interceptor';
+import { ValidateValueLimitPipe } from 'src/pipes/validate-value-limit.pipes';
+import type { CreatePostDTO } from './dto/create-post.dto';
+import type { PostDTO } from './dto/post.dto';
+import type { ObjectId } from 'mongoose';
 
 @Controller('blog')
 export class BlogController {
   constructor(private blogService: BlogService) {}
 
-  @Get('posts')
-  async getPosts() {
-    return await this.blogService.getPosts();
+  @UseInterceptors(ListInterceptor)
+  @Get()
+  async getPosts(
+    @Query('page') _page = 1,
+    @Query('pageSize', new ValidateValueLimitPipe({ limit: [10, 50] }))
+    _pageSize = 10,
+  ) {
+    const pagination = {
+      page: Number(_page),
+      pageSize: Number(_pageSize),
+    };
+    const { data: blogs, total } = await this.blogService.getPosts(pagination);
+    return { data: blogs, total, ...pagination };
   }
 
-  @Get('post/:postID')
-  async getPost(@Param('postID', new ValidateObjectId()) postID) {
-    const post = await this.blogService.getPost(postID);
-    if (!post) throw new NotFoundException('Post does not exist!');
+  @Get('/:postId')
+  async getPost(@Param('postId', new ValidateObjectIdPipe()) postId: ObjectId) {
+    const post = await this.blogService.getPost(postId);
+    if (!post) {
+      // throw new NotFoundException('Post does not exist!');
+      return;
+    }
     return post;
   }
 
-  @Post('/post')
-  async addPost(@Body(new ValidationPipe()) basePostDTO: PostDTO) {
+  @Post()
+  async addPost(@Body(ValidationPipe) basePostDTO: PostDTO) {
     return await this.blogService.addPost(basePostDTO);
     // return res.status(HttpStatus.OK).json(data);
   }
-  @Put('/edit')
+  @Put('/:postId')
   async editPost(
     @Res() res,
-    @Query('postID', new ValidateObjectId()) postID,
+    @Param('postId', ValidateObjectIdPipe) postId,
     @Body() createPostDTO: CreatePostDTO,
   ) {
-    const editedPost = await this.blogService.editPost(postID, createPostDTO);
-    if (!editedPost) throw new NotFoundException('Post does not exist!');
-    return res.status(HttpStatus.OK).json({
-      message: 'Post has been successfully updated',
-      post: editedPost,
-    });
+    const editedPost = await this.blogService.editPost(postId, createPostDTO);
+
+    const resp = {
+      resultCode: CustomCode.SUCCESS,
+      resultMsg: '修改成功',
+    };
+
+    if (!editedPost) {
+      resp.resultCode = CustomCode.ERROR;
+      resp.resultMsg = '请求失败!';
+    }
+
+    return res.status(HttpStatus.OK).json(resp);
   }
 
-  @Delete('/delete')
-  async deletePost(
-    @Res() res,
-    @Query('postID', new ValidateObjectId()) postID,
-  ) {
-    const deletedPost = await this.blogService.deletePost(postID);
-    if (!deletedPost) throw new NotFoundException('Post does not exist!');
-    return res.status(HttpStatus.OK).json({
-      message: 'Post has been deleted!',
-      post: deletedPost,
-    });
+  @Delete('/:postId')
+  async deletePost(@Res() res, @Param('postId', ValidateObjectIdPipe) postId) {
+    const deletedPost = await this.blogService.deletePost(postId);
+    const resp = {
+      resultCode: CustomCode.SUCCESS,
+      resultMsg: '请求成功',
+    };
+
+    if (!deletedPost) {
+      resp.resultCode = CustomCode.ERROR;
+      resp.resultMsg = 'Blog does not exist!';
+    }
+
+    return res.status(HttpStatus.OK).json(resp);
   }
 }
