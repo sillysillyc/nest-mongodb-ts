@@ -48,7 +48,6 @@ jobs:
       #   env:
       #     CI: true
       # - name: Log info
-        
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.2
