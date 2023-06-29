@@ -4,16 +4,12 @@ import type { Model } from 'mongoose';
 import type { Blog } from './interfaces/blog.interface';
 import type { CreatePostDTO } from './dto/create-post.dto';
 import type { PostDTO } from './dto/post.dto';
-import type { ObjectId } from 'mongoose';
 
 @Injectable()
 export class BlogService {
   constructor(@InjectModel('blog') private readonly blogModel: Model<Blog>) {}
 
-  getPosts = async (params: {
-    page: number;
-    pageSize: number;
-  }): Promise<{ data: Blog[]; total: number }> => {
+  getPosts = async (params: { page: number; pageSize: number }) => {
     const total = await this.blogModel.countDocuments();
     const blogs = await this.blogModel
       .find()
@@ -24,13 +20,12 @@ export class BlogService {
     return { data: blogs, total };
   };
 
-  async getPost(postID: ObjectId): Promise<Blog> {
-    console.log('test');
+  async getPost(postID: string) {
     const post = await this.blogModel.findById(postID).exec();
     return post;
   }
 
-  async addPost(basePostDTO: PostDTO): Promise<Blog> {
+  async addPost(basePostDTO: PostDTO) {
     const datePosted = new Date()
       .toLocaleString('zh-CN', { hour12: false })
       .replace(/\//g, '-');
@@ -43,7 +38,7 @@ export class BlogService {
     return newPost.save();
   }
 
-  async editPost(postID, createPostDTO: CreatePostDTO): Promise<Blog> {
+  async editPost(postID: string, createPostDTO: Partial<CreatePostDTO>) {
     const editedPost = await this.blogModel.findByIdAndUpdate(
       postID,
       createPostDTO,
@@ -52,8 +47,13 @@ export class BlogService {
     return editedPost;
   }
 
-  async deletePost(postID): Promise<any> {
+  async deletePost(postID: string) {
     const deletedPost = await this.blogModel.findByIdAndRemove(postID);
     return deletedPost;
   }
+
+  getPostByCondition = async (postDTO: PostDTO) => {
+    const result = await this.blogModel.find(postDTO).exec();
+    return result;
+  };
 }
