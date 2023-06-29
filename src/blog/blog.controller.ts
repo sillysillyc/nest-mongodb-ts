@@ -28,9 +28,9 @@ export class BlogController {
   @UseInterceptors(ListInterceptor)
   @Get()
   async getPosts(
-    @Query('page') _page = 1,
+    @Query('page') _page = '1',
     @Query('pageSize', new ValidateValueLimitPipe({ limit: [10, 50] }))
-    _pageSize = 10,
+    _pageSize = '10',
   ) {
     const pagination = {
       page: Number(_page),
@@ -52,9 +52,10 @@ export class BlogController {
 
   @Post()
   async addPost(@Body(ValidationPipe) basePostDTO: PostDTO) {
-    return await this.blogService.addPost(basePostDTO);
-    // return res.status(HttpStatus.OK).json(data);
+    await this.blogService.addPost(basePostDTO);
+    return;
   }
+
   @Put('/:postId')
   async editPost(
     @Res() res,
