@@ -11,7 +11,7 @@ import { CustomCode } from '../helpers/codes';
 import type { Request } from 'express';
 
 interface Response<T> {
-  data: T;
+  data?: T;
 }
 
 // 不需要处理的接口路径及方法
@@ -38,11 +38,18 @@ export class GlobalTransformInterceptor<T>
       map((data) => {
         context.switchToHttp().getResponse().status(HttpStatus.OK);
         if (!shouldSkipGlobalIntercepter) {
-          return {
-            data,
+          const resTemplate: {
+            data?: T;
+            resultCode: CustomCode;
+            resultMsg: string;
+          } = {
             resultCode: CustomCode.SUCCESS,
             resultMsg: '请求成功',
           };
+          if (data) {
+            resTemplate.data = data;
+          }
+          return resTemplate;
         }
         return data;
       }),
