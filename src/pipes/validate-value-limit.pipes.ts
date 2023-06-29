@@ -8,18 +8,19 @@ import {
 type SizeLimit = [min: number, max: number];
 
 @Injectable()
-export class ValidateValueLimitPipe implements PipeTransform<number> {
+export class ValidateValueLimitPipe implements PipeTransform<string | number> {
   private limit: SizeLimit;
   constructor(params: { limit: SizeLimit }) {
     this.limit = params.limit;
   }
-  async transform(value: number, argumentMetadata: ArgumentMetadata) {
+  transform(value: string | number, argumentMetadata: ArgumentMetadata) {
     const [min, max] = this.limit;
-    if (value < min || value > max) {
+    const _value = Number(value);
+    if (isNaN(_value) || _value < min || _value > max) {
       throw new BadRequestException(
         `${argumentMetadata.data} 的范围是 ${min} - ${max}`,
       );
     }
-    return value;
+    return _value;
   }
 }
