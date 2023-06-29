@@ -8,7 +8,7 @@ import {
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CustomCode } from '../helpers/codes';
-import { IncomingMessage } from 'http';
+import type { Request } from 'express';
 
 interface Response<T> {
   data: T;
@@ -16,7 +16,7 @@ interface Response<T> {
 
 // 不需要处理的接口路径及方法
 const whiteListMap = {
-  get: [/\/blog.*/],
+  get: ['/blog'],
 };
 
 @Injectable()
@@ -27,12 +27,11 @@ export class GlobalTransformInterceptor<T>
     context: ExecutionContext,
     next: CallHandler<T>,
   ): Observable<Response<T> | T> {
-    const incomingMessage: IncomingMessage = context.getArgByIndex(0);
-    const { method, url } = incomingMessage;
-
-    const shouldSkipGlobalIntercepter = whiteListMap[
-      method.toLowerCase()
-    ]?.some((pathReg: RegExp) => pathReg.test(url));
+    const req = context.switchToHttp().getRequest<Request>();
+    const path = req.route.path;
+    const method = req.method;
+    const shouldSkipGlobalIntercepter =
+      whiteListMap[method.toLowerCase()]?.includes(path);
 
     // console.log(method, url);
     return next.handle().pipe(
