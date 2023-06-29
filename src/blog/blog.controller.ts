@@ -11,15 +11,14 @@ import {
   Delete,
   ValidationPipe,
   UseInterceptors,
+  HttpException,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
-import { ValidateObjectIdPipe } from 'src/pipes/validate-object-id.pipes';
-import { CustomCode } from 'src/helpers/codes';
-import { ListInterceptor } from 'src/interceptors/list.interceptor';
-import { ValidateValueLimitPipe } from 'src/pipes/validate-value-limit.pipes';
+import { ValidateObjectIdPipe } from '../pipes/validate-object-id.pipes';
+import { ListInterceptor } from '../interceptors/list.interceptor';
+import { ValidateValueLimitPipe } from '../pipes/validate-value-limit.pipes';
 import type { CreatePostDTO } from './dto/create-post.dto';
 import type { PostDTO } from './dto/post.dto';
-import type { ObjectId } from 'mongoose';
 
 @Controller('blog')
 export class BlogController {
@@ -41,12 +40,8 @@ export class BlogController {
   }
 
   @Get('/:postId')
-  async getPost(@Param('postId', new ValidateObjectIdPipe()) postId: ObjectId) {
+  async getPost(@Param('postId', ValidateObjectIdPipe) postId: string) {
     const post = await this.blogService.getPost(postId);
-    if (!post) {
-      // throw new NotFoundException('Post does not exist!');
-      return;
-    }
     return post;
   }
 
@@ -58,38 +53,37 @@ export class BlogController {
 
   @Put('/:postId')
   async editPost(
-    @Res() res,
-    @Param('postId', ValidateObjectIdPipe) postId,
-    @Body() createPostDTO: CreatePostDTO,
+    @Param('postId', ValidateObjectIdPipe) postId: string,
+    @Body() createPostDTO: Partial<CreatePostDTO>,
   ) {
     const editedPost = await this.blogService.editPost(postId, createPostDTO);
 
-    const resp = {
-      resultCode: CustomCode.SUCCESS,
-      resultMsg: '修改成功',
-    };
-
     if (!editedPost) {
-      resp.resultCode = CustomCode.ERROR;
-      resp.resultMsg = '请求失败!';
+      throw new HttpException('请求失败!', HttpStatus.OK);
     }
 
-    return res.status(HttpStatus.OK).json(resp);
+    return;
   }
 
   @Delete('/:postId')
-  async deletePost(@Res() res, @Param('postId', ValidateObjectIdPipe) postId) {
-    const deletedPost = await this.blogService.deletePost(postId);
-    const resp = {
-      resultCode: CustomCode.SUCCESS,
-      resultMsg: '请求成功',
-    };
-
-    if (!deletedPost) {
-      resp.resultCode = CustomCode.ERROR;
-      resp.resultMsg = 'Blog does not exist!';
-    }
-
-    return res.status(HttpStatus.OK).json(resp);
+  async deletePost(@Param('postId', ValidateObjectIdPipe) postId: string) {
+    await this.blogService.deletePost(postId);
+    return;
   }
+
+  // @Delete('/:postId')
+  // async deletePost(@Res() res, @Param('postId', ValidateObjectIdPipe) postId) {
+  //   const deletedPost = await this.blogService.deletePost(postId);
+  //   const resp = {
+  //     resultCode: CustomCode.SUCCESS,
+  //     resultMsg: '请求成功',
+  //   };
+
+  //   if (!deletedPost) {
+  //     resp.resultCode = CustomCode.ERROR;
+  //     resp.resultMsg = 'Blog does not exist!';
+  //   }
+
+  //   return res.status(HttpStatus.OK).json(resp);
+  // }
 }

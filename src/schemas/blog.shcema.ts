@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import { overwriteSchemaToJSON } from 'src/helpers/tools';
+import { overwriteSchemaToJSON } from '../helpers/tools';
 
 export const BlogSchema = new mongoose.Schema(
   {
