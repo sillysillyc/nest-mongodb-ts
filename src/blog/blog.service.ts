@@ -14,7 +14,7 @@ export class BlogService {
     page: number;
     pageSize: number;
   }): Promise<{ data: Blog[]; total: number }> => {
-    const total = await this.blogModel.count().exec();
+    const total = await this.blogModel.countDocuments();
     const blogs = await this.blogModel
       .find()
       .skip((params.page - 1) * params.pageSize)
