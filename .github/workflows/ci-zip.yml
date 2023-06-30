@@ -19,6 +19,7 @@ jobs:
         #   ref: master
       - name: Write DBSecrets into .env
         run: |
+          echo " " >> .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_PWD=${{ secrets.DB_PWD }}" >> .env
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
