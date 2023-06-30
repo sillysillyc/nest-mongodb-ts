@@ -68,7 +68,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd $TARGET
-            unzip ./nest.zip
+            pwd
+            # unzip ./nest.zip
           # script: |
           #   export NVM_DIR=~/.nvm
           #   source ~/.nvm/nvm.sh
