@@ -74,7 +74,8 @@ describe('BlogController', () => {
 
   describe('GET /blog/:postId blogController.getPost', () => {
     it('should return PostDTO', async () => {
-      const result = await blogController.getPost('649b9dad12633fa9c58caa6d');
+      const id = '649e985bb8df1d74659b012c';
+      const result = await blogController.getPost(id);
       if (result) {
         expect(result).toEqual(expect.objectContaining(testPostDTO));
       }
@@ -101,7 +102,7 @@ describe('BlogController', () => {
 
   describe('PUT /blog/:postId blogController.editPost', () => {
     it('should edit PostDTO', async () => {
-      const id = '649b8d8f480d570fb1de4337';
+      const id = '649e985bb8df1d74659b012c';
 
       const randomTile: string = Mock.Random.title();
 

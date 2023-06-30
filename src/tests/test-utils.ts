@@ -1,7 +1,8 @@
 import { type ModelDefinition, MongooseModule } from '@nestjs/mongoose';
+import { dbLink } from '../app.module';
 
 export const mongoDBImports = (options: ModelDefinition[]) => [
-  MongooseModule.forRoot('mongodb://47.98.149.5/nest', {
+  MongooseModule.forRoot(dbLink, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   }),

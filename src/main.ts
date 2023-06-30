@@ -6,6 +6,7 @@ import { GlobalTransformInterceptor } from './interceptors/global-transform.inte
 import * as express from 'express';
 import * as path from 'path';
 import 'dotenv/config';
+
 import type { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
