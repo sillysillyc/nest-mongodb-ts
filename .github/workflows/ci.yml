@@ -1,9 +1,16 @@
 name: Auto CI
-
+# 不执行
 on:
   push:
     branches:
       - master
+
+  workflow_run:
+    workflows: ['CI ZIP']
+    types:
+      - completed
+
+if: github.event.workflow_run.conclusion != 'success'
 
 jobs:
   # 发布到 GitHub Pages

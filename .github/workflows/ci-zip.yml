@@ -1,0 +1,73 @@
+name: CI ZIP
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  # 发布到服务器
+  build-and-deploy-to-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          script: |
+            ls -la
+        # with:
+        #   ref: master
+      - name: Write DBSecrets into .env
+        run: |
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PWD=${{ secrets.DB_PWD }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_ADDRESS=${{ secrets.DB_ADDRESS }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Install Dependencies
+        run: npm install
+          CI: true
+
+      - name: Build Project
+        run: npm run build
+        env:
+          CI: true
+
+      - name: Log info
+        run: echo 123
+
+      - name: Zip files
+        run: zip -r nest.zip .
+
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@v2.1.2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: '-rltgoDzvO --delete'
+          SOURCE: './nest.zip'
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+      
+      
+      # - name: executing remote ssh commands using ssh
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.REMOTE_HOST }}
+      #     username: ${{ secrets.REMOTE_USER }}
+      #     key: ${{ secrets.SERVER_SSH_KEY }}
+      #     script: |
+      #       export NVM_DIR=~/.nvm
+      #       source ~/.nvm/nvm.sh
+      #       cd /usr/nest-backend
+      #       npm install --legacy-peer-deps --production
+      #       chown -R root:root .
+      #       npm run build
+      #       pm2 delete nest
+      #       pm2 start ./dist/main.js --name nest
