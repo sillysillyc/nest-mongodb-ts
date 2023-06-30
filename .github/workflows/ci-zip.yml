@@ -19,11 +19,11 @@ jobs:
         #   ref: master
       - name: Write DBSecrets into .env
         run: |
-          echo "DB_NAME=${{ secrets.DB_NAME }}\n" >> .env
-          echo "DB_PWD=${{ secrets.DB_PWD }}\n" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}\n" >> .env
-          echo "DB_ADDRESS=${{ secrets.DB_ADDRESS }}\n" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}\n" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PWD=${{ secrets.DB_PWD }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_ADDRESS=${{ secrets.DB_ADDRESS }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v1
