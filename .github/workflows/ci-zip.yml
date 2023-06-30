@@ -46,7 +46,7 @@ jobs:
           echo ${{ secrets.REMOTE_TARGET }}
 
       - name: Zip files
-        run: zip -r ./nest.zip .
+        run: tar -cvf ./nest.tar .
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.2
@@ -69,7 +69,8 @@ jobs:
             cp ./nest.zip /usr/
             rm -rf *
             mv -f /usr/nest.zip ./
-            unzip ./nest.zip
+            tar -xvf  ./nest.tar
+
           # script: |
           #   export NVM_DIR=~/.nvm
           #   source ~/.nvm/nvm.sh
