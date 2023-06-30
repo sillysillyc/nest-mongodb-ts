@@ -66,6 +66,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /usr/nest-backend
+            rm -rf ./node_modules
             unzip ./wuhu.zip
           # script: |
           #   export NVM_DIR=~/.nvm
