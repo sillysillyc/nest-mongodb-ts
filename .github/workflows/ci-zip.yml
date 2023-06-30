@@ -60,12 +60,12 @@ jobs:
 
       - name: executing remote ssh commands using ssh
         uses: appleboy/ssh-action@master
+        env:
+          TARGET: ${{ secrets.REMOTE_TARGET }}
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          env:
-            TARGET: ${{ secrets.REMOTE_TARGET }}
           script: |
             cd $TARGET
             unzip nest.zip
