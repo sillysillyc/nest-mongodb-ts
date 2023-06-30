@@ -46,14 +46,14 @@ jobs:
           echo ${{ secrets.REMOTE_TARGET }}
 
       - name: Zip files
-        run: zip -r ./wuhu.zip .
+        run: zip -r ./nest.zip .
 
       - name: Deploy to Server
         uses: easingthemes/ssh-deploy@v2.1.2
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           ARGS: '-rltgoDzvO --delete'
-          SOURCE: './wuhu.zip'
+          SOURCE: './nest.zip'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
@@ -66,8 +66,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /usr/nest-backend
-            rm -rf ./node_modules
-            unzip ./wuhu.zip
+            cp ./nest.zip /usr/
+            rm -rf *
+            mv /usr/nest.zip ./
+            unzip ./nest.zip
           # script: |
           #   export NVM_DIR=~/.nvm
           #   source ~/.nvm/nvm.sh
