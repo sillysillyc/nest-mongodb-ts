@@ -68,8 +68,8 @@ jobs:
             cd /usr/nest-backend
             cp ./nest.zip /usr/
             rm -rf *
-            mv /usr/nest.zip ./
-            # unzip ./nest.zip
+            mv -f /usr/nest.zip ./
+            unzip ./nest.zip
           # script: |
           #   export NVM_DIR=~/.nvm
           #   source ~/.nvm/nvm.sh
