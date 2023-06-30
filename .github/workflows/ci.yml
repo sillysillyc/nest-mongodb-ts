@@ -74,7 +74,7 @@ jobs:
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
             cd /usr/nest-backend
-            npm install --legacy-peer-deps
+            npm install --legacy-peer-deps --production
             chown -R root:root .
             npm run build
             pm2 delete nest
