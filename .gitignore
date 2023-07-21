@@ -1,9 +1,10 @@
+# env.local config
+.env.local
 # compiled output
 /dist
 .DS_Store
 /node_modules
 
-.env.local
 # Logs
 logs
 *.log
