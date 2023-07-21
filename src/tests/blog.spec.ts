@@ -2,7 +2,8 @@ import { Test, type TestingModule } from '@nestjs/testing';
 import { BlogController } from '../blog/blog.controller';
 import { BlogService } from '../blog/blog.service';
 import { BlogSchema } from '../schemas';
-import { mongoDBImports } from './test-utils';
+import { TestDatabaseModule } from './utils';
+import { BadRequestException, HttpException } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Mock = require('mockjs');
@@ -25,12 +26,9 @@ describe('BlogController', () => {
       controllers: [BlogController],
       providers: [BlogService],
       imports: [
-        ...mongoDBImports([
-          {
-            name: 'blog',
-            schema: BlogSchema,
-            collection: 'blog',
-          },
+        TestDatabaseModule.forRoot(),
+        TestDatabaseModule.forFeature([
+          { name: 'blog', schema: BlogSchema, collection: 'blog' },
         ]),
       ],
     }).compile();
@@ -51,8 +49,8 @@ describe('BlogController', () => {
       pageSize: number 
     }\n`, async () => {
       const { data, page, pageSize, total } = await blogController.getPosts(
-        '1',
-        '10',
+        1,
+        10,
       );
       expect(Array.isArray(data)).toBe(true);
       expect(typeof total).toBe('number');
@@ -69,6 +67,26 @@ describe('BlogController', () => {
           expect(item).toEqual(expect.objectContaining(testPostDTO));
         }
       }
+    });
+
+    it(`should limit pageSize`, async () => {
+      const getPostsSpy = jest
+        .spyOn(blogController, 'getPosts')
+        .mockResolvedValue(
+          // @ts-ignore
+          new BadRequestException(`pageSize 的范围是 10 - 50`),
+        );
+      const result = await blogController.getPosts(1, 100);
+
+      expect(getPostsSpy).toHaveBeenCalledWith(1, 100);
+      expect(result).toBeInstanceOf(BadRequestException);
+    });
+
+    it(`should pageSize exist`, async () => {
+      // @ts-ignore
+      await expect(blogController.getPosts()).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
@@ -102,18 +120,28 @@ describe('BlogController', () => {
 
   describe('PUT /blog/:postId blogController.editPost', () => {
     it('should edit PostDTO', async () => {
-      const id = '649e985bb8df1d74659b012c';
+      const id = '64b8f8129db99973816f0379';
 
       const randomTile: string = Mock.Random.title();
-
-      await blogController.editPost(id, {
+      const result = await blogController.editPost(id, {
         title: randomTile,
       });
-
       const post = await blogService.getPost(id);
 
       expect(!post).toBe(false);
       expect(post.title).toEqual(randomTile);
+      expect(result).toBeUndefined();
+    });
+
+    it('should edit PostDTO Failed', async () => {
+      const id = '649e2dd33883c24579cc6fd1';
+
+      const randomTile: string = Mock.Random.title();
+      await expect(
+        blogController.editPost(id, {
+          title: randomTile,
+        }),
+      ).rejects.toThrow(HttpException);
     });
   });
 

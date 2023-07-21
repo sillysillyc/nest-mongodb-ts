@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Res,
   HttpStatus,
   Param,
   Post,
@@ -12,11 +11,12 @@ import {
   ValidationPipe,
   UseInterceptors,
   HttpException,
+  BadRequestException,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { ValidateObjectIdPipe } from '../pipes/validate-object-id.pipes';
 import { ListInterceptor } from '../interceptors/list.interceptor';
-import { ValidateValueLimitPipe } from '../pipes/validate-value-limit.pipes';
+import { ValidateValueLimitPipe, TransformStringToNumberPipe } from '../pipes';
 import type { CreatePostDTO } from './dto/create-post.dto';
 import type { PostDTO } from './dto/post.dto';
 
@@ -27,16 +27,19 @@ export class BlogController {
   @UseInterceptors(ListInterceptor)
   @Get()
   async getPosts(
-    @Query('page') _page = '1',
+    @Query('page', new TransformStringToNumberPipe()) page: number,
     @Query('pageSize', new ValidateValueLimitPipe({ limit: [10, 50] }))
-    _pageSize = '10',
+    pageSize: number,
   ) {
-    const pagination = {
-      page: Number(_page),
-      pageSize: Number(_pageSize),
-    };
-    const { data: blogs, total } = await this.blogService.getPosts(pagination);
-    return { data: blogs, total, ...pagination };
+    if (!page || !pageSize) {
+      throw new BadRequestException('参数缺失');
+    }
+
+    const { data: blogs, total } = await this.blogService.getPosts({
+      page,
+      pageSize,
+    });
+    return { data: blogs, total, page, pageSize };
   }
 
   @Get('/:postId')
