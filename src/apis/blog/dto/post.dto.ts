@@ -1,5 +1,8 @@
 import { IsString, IsNotEmpty } from 'class-validator';
-import { typeErrorMessage, emptyErrorMessage } from '../../helpers/constants';
+import {
+  typeErrorMessage,
+  emptyErrorMessage,
+} from '../../../helpers/constants';
 
 export class PostDTO {
   @IsString({ message: typeErrorMessage('title') })

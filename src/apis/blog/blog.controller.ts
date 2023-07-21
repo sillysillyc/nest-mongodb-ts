@@ -14,9 +14,12 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { BlogService } from './blog.service';
-import { ValidateObjectIdPipe } from '../pipes/validate-object-id.pipes';
-import { ListInterceptor } from '../interceptors/list.interceptor';
-import { ValidateValueLimitPipe, TransformStringToNumberPipe } from '../pipes';
+import { ValidateObjectIdPipe } from '../../pipes/validate-object-id.pipes';
+import { ListInterceptor } from '../../interceptors/list.interceptor';
+import {
+  ValidateValueLimitPipe,
+  TransformStringToNumberPipe,
+} from '../../pipes';
 import type { CreatePostDTO } from './dto/create-post.dto';
 import type { PostDTO } from './dto/post.dto';
 
