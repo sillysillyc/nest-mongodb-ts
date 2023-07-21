@@ -5,5 +5,6 @@ declare namespace NodeJS {
     DB_USER: string;
     DB_ADDRESS: string;
     DB_PORT: string;
+    NODE_ENV: 'development' | 'production';
   }
 }
