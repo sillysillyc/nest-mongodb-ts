@@ -1,4 +1,4 @@
-name: CI ZIP
+name: Auto Deploy
 
 on:
   push:
