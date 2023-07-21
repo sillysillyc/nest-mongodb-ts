@@ -1,10 +1,17 @@
 declare namespace NodeJS {
   interface ProcessEnv {
-    DB_NAME: string;
-    DB_PWD: string;
-    DB_USER: string;
-    DB_ADDRESS: string;
-    DB_PORT: string;
+    MONGO_DB_NAME: string;
+    MONGO_DB_PWD: string;
+    MONGO_DB_USER: string;
+    MONGO_DB_ADDRESS: string;
+    MONGO_DB_PORT: string;
+
+    MYSQL_DB_NAME: string;
+    MYSQL_DB_PWD: string;
+    MYSQL_DB_USER: string;
+    MYSQL_DB_ADDRESS: string;
+    MYSQL_DB_PORT: string;
+
     NODE_ENV: 'development' | 'production';
   }
 }
