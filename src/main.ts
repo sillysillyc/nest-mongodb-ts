@@ -5,9 +5,10 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { GlobalTransformInterceptor } from './interceptors/global-transform.interceptor';
 import * as express from 'express';
 import * as path from 'path';
-import 'dotenv/config';
-
+import { config } from 'dotenv';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+
+config();
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
