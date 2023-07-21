@@ -1,8 +1,8 @@
 import { Test, type TestingModule } from '@nestjs/testing';
-import { BlogController } from '../blog/blog.controller';
-import { BlogService } from '../blog/blog.service';
+import { BlogController } from '../apis/blog/blog.controller';
+import { BlogService } from '../apis/blog/blog.service';
 import { BlogSchema } from '../schemas';
-import { TestDatabaseModule } from './utils';
+import { MongoDBModule } from '../db';
 import { BadRequestException, HttpException } from '@nestjs/common';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -26,8 +26,8 @@ describe('BlogController', () => {
       controllers: [BlogController],
       providers: [BlogService],
       imports: [
-        TestDatabaseModule.forRoot(),
-        TestDatabaseModule.forFeature([
+        MongoDBModule.forRoot(),
+        MongoDBModule.forFeature([
           { name: 'blog', schema: BlogSchema, collection: 'blog' },
         ]),
       ],
